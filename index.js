@@ -128,16 +128,25 @@ app.delete("/:id", async (req, res) => {
 });
 
 
+const PORT = process.env.PORT || 5000;
 
-
-// Start server only after DB is connected
 async function startServer() {
-  // try {
   await connectToDB();
-  app.listen(5000, () => {
-    console.log("Server running on http://localhost:5000");
+  app.listen(PORT, () => {
+    console.log(`Server running on ${PORT}`);
   });
-
 }
 
 startServer();
+
+// // Start server only after DB is connected
+// async function startServer() {
+//   // try {
+//   await connectToDB();
+//   app.listen(5000, () => {
+//     console.log("Server running on http://localhost:5000");
+//   });
+
+// }
+
+// startServer();
