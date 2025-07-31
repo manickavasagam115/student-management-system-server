@@ -1,34 +1,31 @@
-//third party module
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
-const morgan = require("morgan");
 const cors = require("cors");
+const morgan = require("morgan");
+require("dotenv").config(); // Important: Load .env
 
-//Middleware
+const connectToDB = require("./db");
+
+// Middleware
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
-//Router
-
+// Routes
 const infoRouter = require("./router");
 app.use("/info", infoRouter);
 
-//listen port
-app.listen(5000, () => {
-  console.log("server started on 5000");
-});
+// Start server only after DB is connected
+async function startServer() {
+  try {
+    await connectToDB();
+    app.listen(5000, () => {
+      console.log("Server running on http://localhost:5000");
+    });
+  } catch (err) {
+    console.error(" Failed to start server:", err);
+    process.exit(1);
+  }
+}
 
-//monogoose connectiom
-mongoose
-  .connect("mongodb://127.0.0.1:27017/mongoose", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connected successfully to MongoDB");
-  })
-  .catch((error) => {
-    console.error("Connection error:", error);
-  });
+startServer();

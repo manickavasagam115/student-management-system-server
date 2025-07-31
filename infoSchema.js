@@ -1,3 +1,4 @@
+// infoSchema.js
 const mongoose = require("mongoose");
 
 const infoSchema = mongoose.Schema({
